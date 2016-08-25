@@ -1,0 +1,37 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.2'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+project(':android-seekbarpreference') {
+    def pomInfo = new XmlSlurper().parse(new File('info.pom'));
+
+    afterEvaluate { project ->
+        uploadArchives {
+            repositories {
+                mavenDeployer {
+                    pom.project {
+                        name pomInfo.name
+                        description pomInfo.description
+                        url pomInfo.url
+                    }
+                }
+            }
+        }
+    }
+}
